@@ -8,5 +8,6 @@ A simple multiplayer and online game using
 - node.js
 - socket.io
 - observer pattern
+- docker
 
-[YouTube](https://www.youtube.com/playlist?list=PLMdYygf53DP5SVQQrkKCVWDS0TwYLVitL) - Playlist followed!
+[YouTube Filipe Deschamps](https://www.youtube.com/playlist?list=PLMdYygf53DP5SVQQrkKCVWDS0TwYLVitL) - Playlist followed!
