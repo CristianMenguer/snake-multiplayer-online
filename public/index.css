@@ -1,0 +1,70 @@
+body {
+    margin: 40px 0 0 0;
+    padding: 0;
+    background-color: #EEE;
+    text-align: center;
+}
+
+#screen {
+    border: 1px solid #CCC;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;
+    width: 500px;
+    height: 500px;
+    -webkit-box-shadow: 0px 4px 17px 0px rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0px 4px 17px 0px rgba(0, 0, 0, 0.19);
+    box-shadow: 0px 4px 17px 0px rgba(0, 0, 0, 0.19);
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#score {
+    font-size: 13px;
+    vertical-align: top;
+    display: inline-block;
+    font-family: Arial, Helvetica, sans-serif
+}
+
+#score tr.header td {
+    border-bottom: 1px solid #CCC;
+    padding-bottom: 8px;
+}
+
+#score tr.footer td {
+    border-top: 1px solid #CCC;
+    font-size: 11px;
+}
+
+#score td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#score .socket-id {
+    font-weight: normal;
+    color: #222;
+    width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block
+}
+
+#score .score-value {
+    font-weight: bold;
+    color: #000;
+    text-align: right;
+}
+
+#score .current-player {
+    color: #bdaa27;
+}
+
+.invisible {
+    display: none;
+}
+

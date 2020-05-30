@@ -1,0 +1,187 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Multiplayer Game</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="/socket.io/socket.io.js"></script>
+
+</head>
+
+<body>
+    <canvas id="screen" height="20" width="20"></canvas>
+    <table id="score"></table>
+
+    <br />
+    <hr>
+    <br />
+
+    <label for="inputName">Username
+        <input id="inputName" type="text" placeholder="Username" />
+    </label>
+
+    <br>
+    <br>
+
+    <label class="invisible" id="labelFrequency">Frequency
+        <input id="inputFrequency" type="number" placeholder="Frequency" />
+    </label>
+
+    <br />
+    <br />
+
+    <input class="invisible" id="startButton" type="button" value="Start" />
+
+    <script type="module">
+
+        import { createKeyboardListener, createUsernameListener, createFrequencyListener, createStartListener } from './input-listener.js'
+        import createGame from './game.js'
+        import renderScreen, { setupScreen } from './render-screen.js'
+
+        const game = createGame()
+        const keyboardListener = createKeyboardListener(document)
+        const usernameListener = createUsernameListener(document)
+        const frequencyListener = createFrequencyListener(document)
+        const startListener = createStartListener(document)
+
+        const socket = io()
+
+        ///////
+
+        socket.on('connect', () => {
+            const playerId = socket.id
+            //console.log(`Player connected on Client with id: ${playerId}`)
+
+            const screen = document.getElementById('screen')
+            const score = document.getElementById('score')
+
+            setupScreen(screen, game)
+            renderScreen(screen, score, game, requestAnimationFrame, playerId)
+        })
+
+        socket.on('setup', (state) => {
+            const playerId = socket.id
+            game.setState(state)
+
+            document.getElementById("inputFrequency").value = game.state.frequencyFruit
+
+            keyboardListener.registerPlayerId(playerId)
+            keyboardListener.subscribe(game.movePlayer)
+            keyboardListener.subscribe((command) => {
+                socket.emit('move-player', command)
+            })
+
+
+            usernameListener.registerPlayerId(playerId)
+            usernameListener.subscribe(game.changePlayerName)
+            usernameListener.subscribe((command) => {
+
+                socket.emit('change-name-player', command)
+
+            })
+
+            frequencyListener.registerPlayerId(playerId)
+            frequencyListener.subscribe(game.changeFrequency)
+            frequencyListener.subscribe((command) => {
+
+                socket.emit('change-frequency', command)
+            })
+
+            startListener.registerPlayerId(playerId)
+            startListener.subscribe((command) => {
+                socket.emit('start-stop', command)
+            })
+
+            game.setPlayerAdmin()
+
+        })
+
+        socket.on('add-player', (command) => {
+            //console.log(`Receiveing ${command.type} -> ${command.playerId}`)
+            game.addPlayer(command)
+        })
+
+        socket.on('remove-player', (command) => {
+            //console.log(`Receiveing ${command.type} -> ${command.playerId}`)
+            game.removePlayer(command)
+        })
+
+        socket.on('move-player', (command) => {
+            //console.log(`Receiveing ${command.type} -> ${command.playerId}`)
+
+            const playerId = socket.id
+
+            if (playerId !== command.playerId) {
+                game.movePlayer(command)
+            }
+        })
+
+        socket.on('add-points', (command) => {
+
+            const playerId = socket.id
+
+            if (playerId !== command.playerId) {
+                game.addPoints(command)
+            }
+        })
+
+        socket.on('change-name-player', (command) => {
+
+            const playerId = socket.id
+
+            if (playerId !== command.playerId) {
+                game.changePlayerName(command)
+            }
+        })
+
+        socket.on('change-frequency', (command) => {
+
+            const frequency = command.frequency
+
+            const playerId = socket.id
+
+            if (playerId !== command.playerId && frequency > 0) {
+                game.changeFrequency(command)
+                document.getElementById("inputFrequency").value = frequency
+            }
+        })
+
+        socket.on('add-fruit', (command) => {
+            //console.log(`Receiveing ${command.type} -> ${command.playerId}`)
+            game.addFruit(command)
+        })
+
+        socket.on('remove-fruit', (command) => {
+            //console.log(`Receiveing ${command.type} -> ${command.fruitId}`)
+            game.removeFruit(command)
+        })
+
+        socket.on('start-stop', (command) => {
+
+            if (!game.state.playing) {
+                game.start()
+            } else {
+                game.stop()
+            }
+        })
+
+        socket.on('set-admin', () => {
+            checkAdmin()
+        })
+
+        function checkAdmin() {
+            game.setPlayerAdmin()
+
+            if (game.state.players[socket.id].admin) {
+                document.getElementById("labelFrequency").classList.remove("invisible")
+                document.getElementById("startButton").classList.remove("invisible")
+            } else {
+                document.getElementById("labelFrequency").classList.add("invisible")
+                document.getElementById("startButton").classList.add("invisible")
+            }
+        }
+
+    </script>
+</body>
+
+</html>
