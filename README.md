@@ -2,10 +2,10 @@
 
 <h1 align="center">
 <br>
-  <img src="public/images/game-preview.gif" alt="snake-online" >
-<br>
-<br>
 Snake Multiplayer Online
+<br>
+<img src="public/images/game-preview.gif" alt="snake-online" >
+<br>
 </h1>
 
 <p align="center">A simple multiplayer and online game</p>
