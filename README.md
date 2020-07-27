@@ -1,8 +1,8 @@
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/Cristian-Menguer/snake-multiplayer-online)
 
 <h1 align="center">
-<br>
 Snake Multiplayer Online
+<br>
 <br>
 <img src="public/images/game-preview.gif" alt="snake-online" >
 <br>
